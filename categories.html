@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <header class="flex items-center justify-between px-4 shadow-md py-2">
+      <span class="text-2xl font-bold text-slate-700">Hanca</span>
+      <nav class="flex gap-2 text-slate-700">
+        <a href="/">Home</a>
+        <a href="/categories.html">Categories</a>
+        <a href="/Products.html">Products</a>
+      </nav>
+    </header>
+    <main>
+      <h2>Categories</h2>
+      <div x-data="{categories: localStorage.getItem('_x_categories')}">
+          <div>
+        <template x-for="category in JSON.parse(categories)">
+          <p x-text="category.category"></p>
+        </template>
+          </div>
+      </div>
+    </main>
+
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store( 'categories', {
+            categories: [],
+            category: '',
+            categoryId: '',
+        } )
+    })
+</script>
+  </body>
+</html>

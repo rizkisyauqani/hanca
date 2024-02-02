@@ -14,25 +14,30 @@
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
   </head>
-  <body x-data="{isOpen: false}">
+  <body x-data="{isOpen: false, isEdit: false}">
     <header
       class="relative flex items-center justify-between px-4 shadow-md py-2"
     >
       <span class="text-2xl font-bold text-slate-700">Hanca</span>
-      <nav class="gap-2 text-slate-700 hidden">
+      <nav class="gap-2 text-slate-700 hidden md:flex">
         <a href="/">Hanca</a>
         <a href="#categories">Categories</a>
         <a href="#products">Products</a>
       </nav>
-      <div>
+      <div class="md:hidden">
         <img src="/images/hamburger.png" alt="HamburgerIcon" class="w-7" />
       </div>
     </header>
-    <div x-show="isOpen"
+    <div
+      x-show="isOpen"
+      class="absolute top-0 left-0 right-0 z-10 bg-slate-600 w-full h-full opacity-90"
+    ></div>
+    <div
+      x-show="isEdit"
       class="absolute top-0 left-0 right-0 z-10 bg-slate-600 w-full h-full opacity-90"
     ></div>
     <main
-      x-data="{category: '', categoryId: '', categoryImage: '' , hancaCategories: $persist([])}"
+      x-data="{category: '', categoryId: '', categoryImage: '' , hancaCategories: $persist([]), id: ''}"
       class="relative mt-8 px-3 text-slate-700 flex flex-col justify-center items-center"
     >
       <!-- about -->
@@ -51,92 +56,58 @@
       </div>
 
       <!-- categories -->
-      <div id="categories" class="mt-8">
+      <div
+        id="categories"
+        class="mt-8"
+        x-data="{categories: JSON.parse(localStorage.getItem('_x_hancaCategories'))}"
+      >
         <h2 class="text-xl text-cyan-500 text-center font-bold">Categories</h2>
         <div class="flex flex-wrap justify-center items-center gap-8 mt-4">
-          <div
-            class="relative max-w-sm flex flex-col justify-center items-center mt-2 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-10 shadow-md shadow-slate-200"
-          >
-            <img src="/images/hamburger.png" alt="" class="w-9" />
-            <h3 class="text-lg font-medium mt-4">Books</h3>
+          <img
+            src="/images/add.png"
+            alt="add-icon"
+            class="w-4 cursor-pointer"
+            x-on:click="isOpen = ! isOpen"
+          />
+          <template x-for="(item) in categories">
             <div
-              class="absolute right-0 top-0 flex flex-col gap-2 p-1 border bg-cyan-50 rounded-tr-md"
+              class="relative max-w-sm flex flex-col justify-center items-center mt-2 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-10 shadow-md shadow-slate-200"
             >
-              <img
-                src="/images/add.png"
-                alt="add-icon"
-                class="w-4 cursor-pointer"
-              />
-              <img
-                src="/images/edit.png"
-                alt="edit-icon"
-                class="w-4 cursor-pointer"
-              />
-              <img
-                src="/images/delete.png"
-                alt="delete-icon"
-                class="w-4 cursor-pointer"
-              />
+              <!-- <img src="/images/hamburger.png" alt="" class="w-9" /> -->
+              <h3 class="text-lg font-medium mt-4" x-text="item.category"></h3>
+              <div
+                class="absolute right-0 top-0 flex flex-col gap-2 p-1 border bg-cyan-50 rounded-tr-md"
+              >
+                <img
+                  src="/images/edit.png"
+                  alt="edit-icon"
+                  class="w-4 cursor-pointer"
+                  x-on:click="isEdit = ! isEdit, id = item.categoryId"
+                />
+                <template x-if="item.categoryId !== id">
+                  <img
+                    src="/images/delete.png"
+                    alt="delete-icon"
+                    class="w-4 cursor-pointer"
+                    x-on:click="localStorage.removeItem('_x_hancaCategories')[id]"
+                  />
+                </template>
+              </div>
             </div>
-          </div>
-          <div
-            class="relative max-w-sm flex flex-col justify-center items-center mt-2 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-10 shadow-md shadow-slate-200"
-          >
-            <img src="/images/hamburger.png" alt="" class="w-9" />
-            <h3 class="text-lg font-medium mt-4">Films</h3>
-            <div
-              class="absolute right-0 top-0 flex flex-col gap-2 p-1 border bg-cyan-50 rounded-tr-md"
-            >
-              <img
-                src="/images/add.png"
-                alt="add-icon"
-                class="w-4 cursor-pointer"
-                x-on:click="isOpen = ! isOpen"
-              />
-              <img
-                src="/images/edit.png"
-                alt="edit-icon"
-                class="w-4 cursor-pointer"
-              />
-              <img
-                src="/images/delete.png"
-                alt="delete-icon"
-                class="w-4 cursor-pointer"
-              />
-            </div>
-          </div>
-          <div
-            class="relative max-w-sm flex flex-col justify-center items-center mt-2 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-8 shadow-md shadow-slate-200"
-          >
-            <img src="/images/hamburger.png" alt="" class="w-9" />
-            <h3 class="text-lg font-medium mt-4">Animes</h3>
-            <div
-              class="absolute right-0 top-0 flex flex-col gap-2 p-1 border bg-cyan-50 rounded-tr-md"
-            >
-              <img
-                src="/images/add.png"
-                alt="add-icon"
-                class="w-4 cursor-pointer"
-              />
-              <img
-                src="/images/edit.png"
-                alt="edit-icon"
-                class="w-4 cursor-pointer"
-              />
-              <img
-                src="/images/delete.png"
-                alt="delete-icon"
-                class="w-4 cursor-pointer"
-              />
-            </div>
-          </div>
+          </template>
         </div>
-        <form x-show="isOpen"
+        <form
+          x-show="isOpen"
           enctype="multipart/form-data"
           @submit.prevent
-          class=" w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col justify-center items-center border-2 border-cyan-400 rounded-md px-4 py-8 shadow-2xl shadow-cyan-400"
+          class="w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col justify-center items-center border-2 border-cyan-400 rounded-md px-4 py-8 shadow-2xl shadow-cyan-400"
         >
-        <img src="/images/close.png" alt="closeicon" class="absolute -top-3 -right-2 w-6 cursor-pointer" x-on:click="isOpen = ! isOpen">
+          <img
+            src="/images/close.png"
+            alt="closeicon"
+            class="absolute -top-3 -right-2 w-6 cursor-pointer"
+            x-on:click="isOpen = ! isOpen"
+          />
           <div class="flex flex-col justify-center w-full">
             <label for="category" class="mb-2 text-sm font-bold text-slate-50"
               >Category</label
@@ -161,25 +132,64 @@
               x-model="categoryId"
             />
           </div>
-          <!-- <div class="flex flex-col justify-center w-full mt-4">
-            <label for="categoryImage" class="mb-2 text-sm font-bold"
-              >add category image</label
-            >
-            <input
-              type="file"
-              id="categoryImage"
-              placeholder="add your category image"
-              class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
-              x-model="categoryImage"
-            />
-          </div> -->
           <button
             class="mt-8 bg-blue-500 text-white py-2 px-4 rounded-md w-full"
-            @click="(hancaCategories.push({category: category, categoryId: categoryId, categoryImage: $store.image.imageUrl}))"
+            @click="(hancaCategories.push({category: category, categoryId: categoryId}), category = '', categoryId = '')"
           >
             Add
           </button>
         </form>
+        <template x-for="item in categories">
+          <form
+            x-show="isEdit"
+            enctype="multipart/form-data"
+            @submit.prevent
+            class="w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col justify-center items-center border-2 border-cyan-400 rounded-md px-4 py-8 shadow-2xl shadow-cyan-400"
+          >
+            <img
+              src="/images/close.png"
+              alt="closeicon"
+              class="absolute -top-3 -right-2 w-6 cursor-pointer"
+              x-on:click="isEdit = ! isEdit"
+            />
+            <div class="flex flex-col justify-center w-full">
+              <label for="category" class="mb-2 text-sm font-bold text-slate-50"
+                >Category</label
+              >
+              <template x-if="item.categoryId === id">
+                <input
+                  type="text"
+                  id="category"
+                  placeholder="add your category"
+                  class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
+                  x-model="item.category"
+                />
+              </template>
+            </div>
+            <div class="flex flex-col justify-center w-full mt-4">
+              <label
+                for="categoryId"
+                class="mb-2 text-sm font-bold text-slate-50"
+                >category id</label
+              >
+              <template x-if="item.categoryId === id">
+                <input
+                  type="number"
+                  id="categoryId"
+                  placeholder="add your category id"
+                  class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
+                  x-model="item.categoryId"
+                />
+              </template>
+            </div>
+            <button
+              class="mt-8 bg-blue-500 text-white py-2 px-4 rounded-md w-full"
+              @click="{category: item.category, categoryId: item.categoryId}"
+            >
+              Add
+            </button>
+          </form>
+        </template>
       </div>
     </main>
 

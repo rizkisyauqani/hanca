@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HANCA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <form x-data x-on:submit.prevent="$store.hanca.tambahHanca()">
+      <label for="nama_barang">Nama Barang</label>
+      <input type="text" id="nama_barang" x-model="$store.hanca.namaHanca" />
+      <label for="kategori">Kategori</label>
+      <select id="kategori" x-model="$store.hanca.kategoriHanca">
+        <option value="" disabled selected>kategori hanca</option>
+        <option value="ku">kategoriku</option>
+        <option value="mu">kategorimu</option>
+        <option value="lu">kategorilu</option>
+      </select>
+      <button>tambah hanca</button>
+    </form>
+
+    <div x-show="$store.hanca.modal">
+      <form x-data x-on:submit.prevent="$store.hanca.saveEditHanca()">
+        <label for="nama_barang">Nama Barang</label>
+        <input type="text" id="nama_barang" x-model="$store.hanca.namaHanca" />
+        <label for="kategori">Kategori</label>
+        <select id="kategori" x-model="$store.hanca.kategoriHanca">
+          <option value="" disabled selected>kategori hanca</option>
+          <option value="ku">kategoriku</option>
+          <option value="mu">kategorimu</option>
+          <option value="lu">kategorilu</option>
+        </select>
+        <button>edit hanca</button>
+      </form>
+    </div>
+
+    <template x-data x-if="$store.hanca.hancas.length">
+      <template x-for="item in $store.hanca.hancas" :key="item.id">
+        <div class="border mb-4">
+          <p x-text="item.hanca"></p>
+          <p x-text="item.kategori"></p>
+          <div>
+            <button x-on:click="$store.hanca.editHanca(item.id)">edit</button>
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <p x-text="$store.hanca.hancas.length"></p>
+
+    <button x-data x-on:click="$store.hanca.hapusSemuaHanca()">reset</button>
+
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("hanca", {
+          //persist hanca-hanca
+          hancas: Alpine.$persist([]),
+
+          modal: false,
+
+          namaHanca: "",
+          kategoriHanca: "",
+
+          //validasiformhanca
+          validasiHanca() {
+            if (!this.namaHanca) {
+              alert("isi nama hanca terlebih dahulu");
+              console.log(this.hancas);
+              return false;
+            }
+            if (!this.kategoriHanca) {
+              alert("pilih kategori hanca terlebih dahulu");
+              return false;
+            }
+            return true;
+          },
+
+          clearForm() {
+            this.namaHanca = "";
+            this.kategori = "";
+          },
+
+          //tambahhanca
+          tambahHanca() {
+            if (this.validasiHanca()) {
+              this.hancas.push({
+                id: Date.now(),
+                hanca: this.namaHanca,
+                kategori: this.kategoriHanca,
+              });
+              this.clearForm();
+            }
+          },
+
+          idHanca: "",
+          editHanca(id) {
+            if (!this.namaHanca) {
+              this.namaHanca = this.hancas.filter(
+                (item) => item.id == id
+              )[0].hanca;
+              this.kategoriHanca = this.hancas.filter(
+                (item) => item.id == id
+              )[0].kategori;
+              this.idHanca = id;
+              console.log(this.idHanca);
+            } else {
+              this.clearForm();
+              this.idHanca = "";
+              console.log(this.idHanca);
+            }
+          },
+
+          saveEditHanca() {
+            if (this.validasiHanca()) {
+              let index = this.hancas.findIndex(
+                (item) => item.id == this.idHanca
+              );
+              this.hancas.splice(index, 1, {
+                id: this.idHanca,
+                hanca: this.namaHanca,
+                kategori: this.kategoriHanca,
+              });
+            }
+          },
+
+          //hapusSemuaHanca
+          hapusSemuaHanca() {
+            if (confirm("hapus hanca?")) {
+              this.hancas = [];
+            }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

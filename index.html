@@ -13,14 +13,16 @@
   </head>
   <body class="bg-[#faf4f0]" x-data>
     <header
-      class="flex justify-between items-center ml-[152px] mr-24 mt-10 mb-20"
+      class="flex justify-between items-center pt-4 mx-6 md:ml-[152px] md:mr-24 md:mt-10 mb-20"
     >
-      <h1 class="text-3xl font-bold text-neutral-700">Hanca</h1>
-      <div class="flex items-center gap-x-8">
+      <h1 class="text-xl md:text-3xl font-bold text-neutral-700">Hanca</h1>
+      <div
+        class="relative md:static flex flex-col-reverse items-end md:items-center gap-x-8"
+      >
         <form
           x-show="$store.hanca.modalPengguna"
           x-transition.origin.right.duration.500ms
-          class="flex items-center"
+          class="flex items-center absolute top-10 md:static"
           @submit.prevent="$store.hanca.simpanPengguna()"
         >
           <template x-if="$store.hanca.pengguna == ''">
@@ -28,7 +30,7 @@
               type="text"
               x-model="$store.hanca.namaPengguna"
               placeholder="isi nama kamu..."
-              class="text-neutral-700 py-2 px-3 w-80 mr-6 rounded-3xl focus:outline-none focus:border-none"
+              class="text-sm md:text-base w-60 text-neutral-700 py-2 px-3 md:w-80 mr-2 md:mr-6 rounded-3xl focus:outline-none focus:border-none"
             />
           </template>
           <template x-if="$store.hanca.pengguna != ''">
@@ -36,11 +38,11 @@
               type="text"
               x-model="$store.hanca.namaPengguna = $store.hanca.pengguna"
               placeholder="isi nama kamu..."
-              class="text-neutral-700 py-2 px-3 w-80 mr-6 rounded-3xl focus:outline-none focus:border-none"
+              class="text-neutral-700 py-2 px-3 w-48 mr-6 rounded-3xl focus:outline-none focus:border-none"
             />
           </template>
           <button
-            class="py-2 px-8 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+            class="py-2 px-5 md:px-8 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
           >
             simpan
           </button>
@@ -50,7 +52,7 @@
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
-              class="bi bi-person-check w-10 cursor-pointer"
+              class="bi bi-person-check w-7 md:w-10 cursor-pointer"
               viewBox="0 0 16 16"
             >
               <path
@@ -67,7 +69,7 @@
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
-              class="bi bi-person-dash w-10 cursor-pointer"
+              class="bi bi-person-dash w-7 md:w-10 cursor-pointer"
               viewBox="0 0 16 16"
             >
               <path
@@ -80,32 +82,34 @@
         </template>
       </div>
     </header>
-    <main class="flex justify-start">
-      <div id="tentang-hanca" class="w-1/2 px-14 ml-24">
+    <main class="flex flex-col gap-y-12 md:flex-row">
+      <div id="tentang-hanca" class="px-6 lgw-1/2 lgpx-14 lgml-24">
         <img
           src="./images/tertunda-resize.jpg"
           alt=""
           class="block rounded-lg"
         />
-        <h2 class="font-bold text-xl text-neutral-700 mt-6">Apa itu hanca?</h2>
-        <p class="mt-8 text-neutral-700">
+        <h2 class="text-lg font-bold md:text-xl text-neutral-700 mt-6">
+          Apa itu hanca?
+        </h2>
+        <p class="text-sm mt-8 md:text-base text-neutral-700">
           Hanca berasal dari kata bahasa Sunda yg artinya pekerjaan yg tertunda.
           Pekerjaan yang dimaksud seperti membaca buku, menonton film, dan
           lain-lain.
         </p>
         <button
-          class="block py-2 px-8 mt-12 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+          class="text-sm block px-4 py-2 md:px-8 mt-12 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium md:text-base"
         >
           Read More
         </button>
       </div>
       <div
         id="item-hanca"
-        class="w-1/2 py-4 px-14 bg-[#ffffff] mr-24 rounded-lg relative"
+        class="mx-4 px-2 md:w-1/2 py-4 md:px-14 bg-[#ffffff] md:mr-24 rounded-lg relative"
       >
         <button
           @click="$store.hanca.bukaFormTambah()"
-          class="block py-2 px-10 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+          class="text-sm block py-2 px-4 md:px-10 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium md:text-base"
         >
           buat hanca
         </button>
@@ -115,7 +119,9 @@
           x-transition.origin.right.duration.700ms
           class="absolute top-0 left-0 right-0 bottom-0 rounded-lg flex flex-col justify-center bg-neutral-600 opacity-95 z-50"
         >
-          <h2 class="text-xl font-bold text-center text-neutral-100">
+          <h2
+            class="text-base md:text-xl font-bold text-center text-neutral-100"
+          >
             Buat Hanca Anda
           </h2>
           <form
@@ -132,7 +138,9 @@
                 class="w-8 grayscale"
             /></span>
             <div class="flex flex-col w-3/4 mx-auto">
-              <label for="nama_barang" class="text-neutral-100 font-semibold"
+              <label
+                for="nama_barang"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Nama Hanca</label
               >
               <input
@@ -140,17 +148,19 @@
                 id="nama_barang"
                 x-model="$store.hanca.namaHanca"
                 placeholder="masukkan nama hanca..."
-                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+                class="text-sm md:text-base border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
               />
             </div>
             <div class="flex flex-col w-3/4 mx-auto mt-4">
-              <label for="kategori" class="text-neutral-100 font-semibold"
+              <label
+                for="kategori"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Kategori Hanca</label
               >
               <select
                 id="kategori"
                 x-model="$store.hanca.kategoriHanca"
-                class="-ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
+                class="text-sm md:text-base -ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
               >
                 <option value="" disabled selected>
                   pilih kategori hanca...
@@ -164,7 +174,9 @@
               </select>
             </div>
             <div class="flex flex-col w-3/4 mx-auto mt-4">
-              <label for="hal/eps" class="text-neutral-100 font-semibold"
+              <label
+                for="hal/eps"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Halaman/Episode</label
               >
               <input
@@ -172,12 +184,12 @@
                 id="hal/eps"
                 x-model="$store.hanca.jumlahHanca"
                 placeholder="masukkan hal/eps saat ini.."
-                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+                class="text-sm md:text-base border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
               />
             </div>
             <div class="w-3/4 mx-auto mt-6 text-center">
               <button
-                class="text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
+                class="text-sm md:text-base text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
               >
                 ubah hanca
               </button>
@@ -190,7 +202,9 @@
           x-transition.origin.right.duration.700ms
           class="absolute top-0 left-0 right-0 bottom-0 rounded-lg flex flex-col justify-center bg-neutral-600 opacity-95 z-50"
         >
-          <h2 class="text-xl font-bold text-center text-neutral-100">
+          <h2
+            class="text-base md:text-xl font-bold text-center text-neutral-100"
+          >
             Buat Hanca Anda
           </h2>
           <form
@@ -207,7 +221,9 @@
                 class="w-8 grayscale"
             /></span>
             <div class="flex flex-col w-3/4 mx-auto">
-              <label for="nama_barang" class="text-neutral-100 font-semibold"
+              <label
+                for="nama_barang"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Nama Hanca</label
               >
               <input
@@ -215,17 +231,19 @@
                 id="nama_barang"
                 x-model="$store.hanca.namaHanca"
                 placeholder="masukkan nama hanca..."
-                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+                class="text-sm md:text-base border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
               />
             </div>
             <div class="flex flex-col w-3/4 mx-auto mt-4">
-              <label for="kategori" class="text-neutral-100 font-semibold"
+              <label
+                for="kategori"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Kategori Hanca</label
               >
               <select
                 id="kategori"
                 x-model="$store.hanca.kategoriHanca"
-                class="-ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
+                class="text-sm md:text-base -ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
               >
                 <option value="" disabled selected>
                   pilih kategori hanca...
@@ -239,7 +257,9 @@
               </select>
             </div>
             <div class="flex flex-col w-3/4 mx-auto mt-4">
-              <label for="hal/eps" class="text-neutral-100 font-semibold"
+              <label
+                for="hal/eps"
+                class="text-sm md:text-base text-neutral-100 font-semibold"
                 >Halaman/Episode</label
               >
               <input
@@ -247,12 +267,12 @@
                 id="hal/eps"
                 x-model="$store.hanca.jumlahHanca"
                 placeholder="masukkan hal/eps saat ini.."
-                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+                class="text-sm md:text-base border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
               />
             </div>
             <div class="w-3/4 mx-auto mt-6 text-center">
               <button
-                class="text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
+                class="text-sm md:text-base text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
               >
                 tambah hanca
               </button>
@@ -261,20 +281,20 @@
         </div>
         <template x-if="$store.hanca.hancas.length">
           <template x-for="item in $store.hanca.hancas">
-            <div class="mt-14 mb-10 flex justify-start" :key="item.id">
+            <div class="mt-14 mb-10 flex gap-x-2 justify-start" :key="item.id">
               <div class="w-1/4">
                 <img :src="item.kategori.icon" alt="icon kategori" />
               </div>
               <div class="w-3/4">
                 <h3
                   x-text="item.hanca"
-                  class="text-lg font-bold text-neutral-700"
+                  class="text-base md:text-lg font-bold text-neutral-700"
                 ></h3>
-                <div class="flex text-neutral-700 text-sm gap-x-4">
-                  <p class="font-medium">
+                <div class="flex text-neutral-700 gap-x-4">
+                  <p class="font-medium text-xs md:text-base">
                     Hal. <span class="font-normal">30</span>
                   </p>
-                  <p class="font-medium">
+                  <p class="font-medium text-xs md:text-base">
                     Kategori
                     <span
                       x-text="item.kategori.namaKategori"
@@ -282,18 +302,18 @@
                     ></span>
                   </p>
                 </div>
-                <div class="flex justify-between text-neutral-700 mt-8 text-sm">
-                  <p>1 juni</p>
+                <div class="flex justify-between text-neutral-700 mt-8">
+                  <p class="text-xs md:text-sm">1 juni</p>
                   <div class="flex gap-x-4">
                     <button
                       @click="$store.hanca.ubahHanca(item.id)"
-                      class="py-1 px-5 bg-[#fdc325] rounded-md text-neutral-100 font-medium"
+                      class="text-sm py-1 px-3 md:px-5 bg-[#fdc325] rounded-md text-neutral-100 font-medium"
                     >
                       edit
                     </button>
                     <button
                       @click="$store.hanca.hapusHanca(item.id)"
-                      class="py-1 px-5 bg-red-500 rounded-md text-neutral-100 font-medium"
+                      class="text-sm py-1 px-3 md:px-5 bg-red-500 rounded-md text-neutral-100 font-medium"
                     >
                       hapus
                     </button>

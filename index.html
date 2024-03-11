@@ -3,219 +3,506 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hanca</title>
+    <title>Desain</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
   </head>
-  <body x-data="{isOpen: false, isEdit: false}">
-    <!-- <header
-      class="relative flex items-center justify-between px-4 shadow-md py-2"
+  <body class="bg-[#faf4f0]" x-data>
+    <header
+      class="flex justify-between items-center ml-[152px] mr-24 mt-10 mb-20"
     >
-      <span class="text-2xl font-bold text-slate-700">Hanca</span>
-      <nav class="gap-2 text-slate-700 hidden md:flex">
-        <a href="/">Hanca</a>
-        <a href="#categories">Categories</a>
-        <a href="#products">Products</a>
-      </nav>
-      <div class="md:hidden">
-        <img src="/images/hamburger.png" alt="HamburgerIcon" class="w-7" />
-      </div>
-    </header> -->
-    <!-- <div
-      x-show="isOpen"
-      class="absolute top-0 left-0 right-0 z-10 bg-slate-600 w-full h-full opacity-90"
-    ></div> -->
-    <!-- <div
-      x-show="isEdit"
-      class="absolute top-0 left-0 right-0 z-10 bg-slate-600 w-full h-full opacity-90"
-    ></div> -->
-    <!-- <main
-      x-data="{category: '', categoryId: '', categoryImage: '' , hancaCategories: $persist([]), id: ''}"
-      class="relative mt-8 px-3 text-slate-700 flex flex-col justify-center items-center"
-    >
-      <!-- about -->
-      <div id="about">
-        <h1 class="text-xl text-cyan-500 text-center font-bold">Hanca</h1>
-        <p
-          class="max-w-sm mt-4 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-3 shadow-md shadow-slate-200"
+      <h1 class="text-3xl font-bold text-neutral-700">Hanca</h1>
+      <div class="flex items-center gap-x-8">
+        <form
+          x-show="$store.hanca.modalPengguna"
+          x-transition.origin.right.duration.500ms
+          class="flex items-center"
+          @submit.prevent="$store.hanca.simpanPengguna()"
         >
-          Hanca merupakan kata yang berasal dari bahasa sunda yang memiliki arti
-          tertunda. Aplikasi dibuat untuk sebagai pencatat kegiatan-kegiatan
-          yang belum selesai agar seseorang langsung dapat kembali melanjutkan
-          aktifitasnya dari tempat berhenti sebelumnya. Kegiatan-kegiatan
-          dikelompokkan berdasarkan kategori yang nanti berisi produk-produk
-          dari masing-masing kategori
-        </p>
-      </div>
-
-      <!-- categories -->
-      <div
-        id="categories"
-        class="mt-8"
-        x-data="{categories: JSON.parse(localStorage.getItem('_x_hancaCategories'))}"
-      >
-        <h2 class="text-xl text-cyan-500 text-center font-bold">Categories</h2>
-        <div class="flex flex-wrap justify-center items-center gap-8 mt-4">
-          <img
-            src="/images/add.png"
-            alt="add-icon"
-            class="w-4 cursor-pointer"
-            x-on:click="isOpen = ! isOpen"
-          />
-          <template x-for="(item) in categories">
-            <div
-              class="relative max-w-sm flex flex-col justify-center items-center mt-2 text-center text-cyan-700 border border-slate-200 rounded-md font-light py-5 px-10 shadow-md shadow-slate-200"
+          <template x-if="$store.hanca.pengguna == ''">
+            <input
+              type="text"
+              x-model="$store.hanca.namaPengguna"
+              placeholder="isi nama kamu..."
+              class="text-neutral-700 py-2 px-3 w-80 mr-6 rounded-3xl focus:outline-none focus:border-none"
+            />
+          </template>
+          <template x-if="$store.hanca.pengguna != ''">
+            <input
+              type="text"
+              x-model="$store.hanca.namaPengguna = $store.hanca.pengguna"
+              placeholder="isi nama kamu..."
+              class="text-neutral-700 py-2 px-3 w-80 mr-6 rounded-3xl focus:outline-none focus:border-none"
+            />
+          </template>
+          <button
+            class="py-2 px-8 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+          >
+            simpan
+          </button>
+        </form>
+        <template x-if="$store.hanca.pengguna != ''">
+          <span @click="$store.hanca.bukaFormPengguna()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="bi bi-person-check w-10 cursor-pointer"
+              viewBox="0 0 16 16"
             >
-              <!-- <img src="/images/hamburger.png" alt="" class="w-9" /> -->
-              <h3 class="text-lg font-medium mt-4" x-text="item.category"></h3>
-              <div
-                class="absolute right-0 top-0 flex flex-col gap-2 p-1 border bg-cyan-50 rounded-tr-md"
+              <path
+                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"
+              />
+              <path
+                d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"
+              />
+            </svg>
+          </span>
+        </template>
+        <template x-if="$store.hanca.pengguna == ''">
+          <span @click="$store.hanca.bukaFormPengguna()"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="bi bi-person-dash w-10 cursor-pointer"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1m0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"
+              />
+              <path
+                d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"
+              /></svg
+          ></span>
+        </template>
+      </div>
+    </header>
+    <main class="flex justify-start">
+      <div id="tentang-hanca" class="w-1/2 px-14 ml-24">
+        <img
+          src="./images/tertunda-resize.jpg"
+          alt=""
+          class="block rounded-lg"
+        />
+        <h2 class="font-bold text-xl text-neutral-700 mt-6">Apa itu hanca?</h2>
+        <p class="mt-8 text-neutral-700">
+          Hanca berasal dari kata bahasa Sunda yg artinya pekerjaan yg tertunda.
+          Pekerjaan yang dimaksud seperti membaca buku, menonton film, dan
+          lain-lain. shagdhsaduhuiiuhsiadhsauidhasudhuiashdausidhuash
+        </p>
+        <button
+          class="block py-2 px-8 mt-12 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+        >
+          Read More
+        </button>
+      </div>
+      <div
+        id="item-hanca"
+        class="w-1/2 py-4 px-14 bg-[#ffffff] mr-24 rounded-lg relative"
+      >
+        <button
+          @click="$store.hanca.bukaFormTambah()"
+          class="block py-2 px-10 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium"
+        >
+          buat hanca
+        </button>
+        <div
+          x-data
+          x-show="$store.hanca.modalUbah"
+          x-transition.origin.right.duration.700ms
+          class="absolute top-0 left-0 right-0 bottom-0 rounded-lg flex flex-col justify-center bg-neutral-600 opacity-95 z-50"
+        >
+          <h2 class="text-xl font-bold text-center text-neutral-100">
+            Buat Hanca Anda
+          </h2>
+          <form
+            x-data
+            x-on:submit.prevent="$store.hanca.simpanUbahHanca()"
+            class="mx-3 mt-4 py-10 rounded-md"
+          >
+            <span
+              @click="$store.hanca.bukaFormUbah()"
+              class="absolute -top-2 rounded-full -right-1 outline-none cursor-pointer z-50"
+              ><img
+                src="./images/close.png"
+                alt="logo tutup"
+                class="w-8 grayscale"
+            /></span>
+            <div class="flex flex-col w-3/4 mx-auto">
+              <label for="nama_barang" class="text-neutral-100 font-semibold"
+                >Nama Hanca</label
               >
-                <img
-                  src="/images/edit.png"
-                  alt="edit-icon"
-                  class="w-4 cursor-pointer"
-                  x-on:click="isEdit = ! isEdit, id = item.categoryId"
-                />
-                <template x-if="item.categoryId !== id">
-                  <img
-                    src="/images/delete.png"
-                    alt="delete-icon"
-                    class="w-4 cursor-pointer"
-                    x-on:click="localStorage.removeItem('_x_hancaCategories')[id]"
-                  />
+              <input
+                type="text"
+                id="nama_barang"
+                x-model="$store.hanca.namaHanca"
+                placeholder="masukkan nama hanca..."
+                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+              />
+            </div>
+            <div class="flex flex-col w-3/4 mx-auto mt-4">
+              <label for="kategori" class="text-neutral-100 font-semibold"
+                >Kategori Hanca</label
+              >
+              <select
+                id="kategori"
+                x-model="$store.hanca.kategoriHanca"
+                class="-ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
+              >
+                <option value="" disabled selected>
+                  pilih kategori hanca...
+                </option>
+                <template x-for="kategori in $store.hanca.kategoris">
+                  <option
+                    :value="kategori.index"
+                    x-text="kategori.namaKategori"
+                  ></option>
                 </template>
+              </select>
+            </div>
+            <div class="flex flex-col w-3/4 mx-auto mt-4">
+              <label for="hal/eps" class="text-neutral-100 font-semibold"
+                >Halaman/Episode</label
+              >
+              <input
+                type="number"
+                id="hal/eps"
+                x-model="$store.hanca.jumlahHanca"
+                placeholder="masukkan hal/eps saat ini.."
+                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+              />
+            </div>
+            <div class="w-3/4 mx-auto mt-6 text-center">
+              <button
+                class="text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
+              >
+                ubah hanca
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          x-data
+          x-show="$store.hanca.modalTambah"
+          x-transition.origin.right.duration.700ms
+          class="absolute top-0 left-0 right-0 bottom-0 rounded-lg flex flex-col justify-center bg-neutral-600 opacity-95 z-50"
+        >
+          <h2 class="text-xl font-bold text-center text-neutral-100">
+            Buat Hanca Anda
+          </h2>
+          <form
+            x-data
+            x-on:submit.prevent="$store.hanca.tambahHanca()"
+            class="mx-3 mt-4 py-10 rounded-md"
+          >
+            <span
+              @click="$store.hanca.bukaFormTambah()"
+              class="absolute -top-2 rounded-full -right-1 outline-none cursor-pointer z-50"
+              ><img
+                src="./images/close.png"
+                alt="logo tutup"
+                class="w-8 grayscale"
+            /></span>
+            <div class="flex flex-col w-3/4 mx-auto">
+              <label for="nama_barang" class="text-neutral-100 font-semibold"
+                >Nama Hanca</label
+              >
+              <input
+                type="text"
+                id="nama_barang"
+                x-model="$store.hanca.namaHanca"
+                placeholder="masukkan nama hanca..."
+                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+              />
+            </div>
+            <div class="flex flex-col w-3/4 mx-auto mt-4">
+              <label for="kategori" class="text-neutral-100 font-semibold"
+                >Kategori Hanca</label
+              >
+              <select
+                id="kategori"
+                x-model="$store.hanca.kategoriHanca"
+                class="-ml-1 mt-1 py-2 px-2 rounded-md text-neutral-700 focus:outline-none"
+              >
+                <option value="" disabled selected>
+                  pilih kategori hanca...
+                </option>
+                <template x-for="kategori in $store.hanca.kategoris">
+                  <option
+                    :value="kategori.index"
+                    x-text="kategori.namaKategori"
+                  ></option>
+                </template>
+              </select>
+            </div>
+            <div class="flex flex-col w-3/4 mx-auto mt-4">
+              <label for="hal/eps" class="text-neutral-100 font-semibold"
+                >Halaman/Episode</label
+              >
+              <input
+                type="number"
+                id="hal/eps"
+                x-model="$store.hanca.jumlahHanca"
+                placeholder="masukkan hal/eps saat ini.."
+                class="border-2 py-2 px-2 rounded-md mt-1 focus:outline-none text-neutral-700 focus:bg-gray-50 focus:text-medium"
+              />
+            </div>
+            <div class="w-3/4 mx-auto mt-6 text-center">
+              <button
+                class="text-center bg-neutral-500 py-2 w-full rounded-md font-semibold text-neutral-100 hover:bg-neutral-700 transition ease-in-out hover:-translate-y-1 duration-300"
+              >
+                tambah hanca
+              </button>
+            </div>
+          </form>
+        </div>
+        <template x-if="$store.hanca.hancas.length">
+          <template x-for="item in $store.hanca.hancas">
+            <div class="mt-14 mb-10 flex justify-start" :key="item.id">
+              <div class="w-1/4">
+                <img :src="item.kategori.icon" alt="icon kategori" />
+              </div>
+              <div class="w-3/4">
+                <h3
+                  x-text="item.hanca"
+                  class="text-lg font-bold text-neutral-700"
+                ></h3>
+                <div class="flex text-neutral-700 text-sm gap-x-4">
+                  <p class="font-medium">
+                    Hal. <span class="font-normal">30</span>
+                  </p>
+                  <p class="font-medium">
+                    Kategori
+                    <span
+                      x-text="item.kategori.namaKategori"
+                      class="font-normal"
+                    ></span>
+                  </p>
+                </div>
+                <div class="flex justify-between text-neutral-700 mt-8 text-sm">
+                  <p>1 juni</p>
+                  <div class="flex gap-x-4">
+                    <button
+                      @click="$store.hanca.ubahHanca(item.id)"
+                      class="py-1 px-5 bg-[#fdc325] rounded-md text-neutral-100 font-medium"
+                    >
+                      edit
+                    </button>
+                    <button
+                      @click="$store.hanca.hapusHanca(item.id)"
+                      class="py-1 px-5 bg-red-500 rounded-md text-neutral-100 font-medium"
+                    >
+                      hapus
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </template>
-        </div>
-        <form
-          x-show="isOpen"
-          enctype="multipart/form-data"
-          @submit.prevent
-          class="w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col justify-center items-center border-2 border-cyan-400 rounded-md px-4 py-8 shadow-2xl shadow-cyan-400"
-        >
-          <img
-            src="/images/close.png"
-            alt="closeicon"
-            class="absolute -top-3 -right-2 w-6 cursor-pointer"
-            x-on:click="isOpen = ! isOpen"
-          />
-          <div class="flex flex-col justify-center w-full">
-            <label for="category" class="mb-2 text-sm font-bold text-slate-50"
-              >Category</label
-            >
-            <input
-              type="text"
-              id="category"
-              placeholder="add your category"
-              class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
-              x-model="category"
-            />
-          </div>
-          <div class="flex flex-col justify-center w-full mt-4">
-            <label for="categoryId" class="mb-2 text-sm font-bold text-slate-50"
-              >add category id</label
-            >
-            <input
-              type="number"
-              id="categoryId"
-              placeholder="add your category id"
-              class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
-              x-model="categoryId"
-            />
-          </div>
-          <button
-            class="mt-8 bg-blue-500 text-white py-2 px-4 rounded-md w-full"
-            @click="(hancaCategories.push({category: category, categoryId: categoryId}), category = '', categoryId = '')"
-          >
-            Add
-          </button>
-        </form>
-        <template x-for="item in categories">
-          <form
-            x-show="isEdit"
-            enctype="multipart/form-data"
-            @submit.prevent
-            class="w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col justify-center items-center border-2 border-cyan-400 rounded-md px-4 py-8 shadow-2xl shadow-cyan-400"
-          >
-            <img
-              src="/images/close.png"
-              alt="closeicon"
-              class="absolute -top-3 -right-2 w-6 cursor-pointer"
-              x-on:click="isEdit = ! isEdit"
-            />
-            <div class="flex flex-col justify-center w-full">
-              <label for="category" class="mb-2 text-sm font-bold text-slate-50"
-                >Category</label
-              >
-              <template x-if="item.categoryId === id">
-                <input
-                  type="text"
-                  id="category"
-                  placeholder="add your category"
-                  class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
-                  x-model="item.category"
-                />
-              </template>
-            </div>
-            <div class="flex flex-col justify-center w-full mt-4">
-              <label
-                for="categoryId"
-                class="mb-2 text-sm font-bold text-slate-50"
-                >category id</label
-              >
-              <template x-if="item.categoryId === id">
-                <input
-                  type="number"
-                  id="categoryId"
-                  placeholder="add your category id"
-                  class="text-sm border slate-100 py-2 px-2 w-full rounded-md focus:outline-blue-200 focus:border-2 focus:border-blue-200 focus:ring-blue-200"
-                  x-model="item.categoryId"
-                />
-              </template>
-            </div>
-            <button
-              class="mt-8 bg-blue-500 text-white py-2 px-4 rounded-md w-full"
-              @click="{category: item.category, categoryId: item.categoryId}"
-            >
-              Add
-            </button>
-          </form>
         </template>
+        <!-- <div
+          class="flex flex-row-reverse items-center gap-x-3 mx-auto justify-center"
+        >
+            <span
+              class="cursor-pointer flex flex-row-reverse items-center gap-x-2 py-2 px-4 text-neutral-100 rounded-3xl bg-[#3aa1ca]"
+            >
+              <span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-caret-down w-4"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M3.204 5h9.592L8 10.481zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659"
+                  />
+                </svg>
+              </span>
+              <button class="font-medium">lihat detail</button>
+            </span>
+        </div> -->
       </div>
-    </main> -->
+    </main>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("hanca", {
+          pengguna: Alpine.$persist(""),
 
-    <!-- <script>
-      let form = document.querySelector("form");
+          //modal
+          modalPengguna: false,
+          bukaFormPengguna() {
+            if (this.pengguna) {
+              this.namaPengguna = this.pengguna;
+            } else if (!this.pengguna) {
+              this.namaPengguna = "";
+            }
+            this.modalPengguna = !this.modalPengguna;
+          },
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+          namaPengguna: "",
+          simpanPengguna() {
+            this.pengguna = this.namaPengguna;
+            this.bukaFormPengguna();
+          },
 
-        let reader = new FileReader();
+          //kumpulan data
+          //persist hancas
+          hancas: Alpine.$persist([]),
 
-        let name = document.getElementById("categoryImage").files[0].name;
+          //data fix
+          kategoris: [
+            {
+              index: 0,
+              namaKategori: "buku",
+              icon: "https://i.ibb.co/thYh8wJ/book.png",
+            },
+            {
+              index: 1,
+              namaKategori: "film",
+              icon: "https://i.ibb.co/1fpQ7XW/film.png",
+            },
+          ],
 
-        reader.addEventListener("load", function () {
-          if (this.result && localStorage) {
-            window.localStorage.setItem(name, this.result);
-            alert("image stored in localstorage");
-          } else {
-            alert("not successfull");
-          }
+          noHanca: [
+            {
+              iconNoData: "https://i.ibb.co/4ZpHgH0/not-book.png",
+            },
+            {
+              iconNoData: "https://i.ibb.co/Kxh1ycM/not-film.png",
+            },
+          ],
+
+          //data toggle element
+          modalUbah: false,
+          modalTambah: false,
+
+          //kumpulan fungsi
+          //fungsi toggle modal
+          bukaFormTambah() {
+            this.modalTambah = !this.modalTambah;
+            this.membersihkanForm();
+          },
+
+          bukaFormUbah() {
+            this.modalUbah = !this.modalUbah;
+          },
+
+          //data model input form hanca
+          namaHanca: "",
+          kategoriHanca: "",
+          jumlahHanca: "",
+
+          //data ambil id hanca
+          idHanca: "",
+
+          //kumpulanfungsiformhanca
+          //validasiformhanca
+          validasiHanca() {
+            if (!this.namaHanca) {
+              alert("isi nama hanca terlebih dahulu");
+              return false;
+            }
+            if (!this.kategoriHanca) {
+              alert("pilih kategori hanca terlebih dahulu");
+              return false;
+            }
+            if (!this.jumlahHanca) {
+              alert("isi halaman/episode terlebih dahulu");
+              return false;
+            }
+            return true;
+          },
+
+          //membersihkan isi input form
+          membersihkanForm() {
+            this.namaHanca = "";
+            this.kategoriHanca = "";
+            this.jumlahHanca = "";
+          },
+
+          //tambah hanca
+          tambahHanca() {
+            if (this.validasiHanca()) {
+              this.hancas.push({
+                id: Date.now(),
+                hanca: this.namaHanca,
+                kategori: this.kategoris[this.kategoriHanca],
+                jumlah: this.jumlahHanca,
+              });
+              this.membersihkanForm();
+              this.bukaFormTambah();
+            }
+          },
+
+          //ambil data berdasarkan id dan toggle modal
+          ubahHanca(id) {
+            if (!this.namaHanca) {
+              this.namaHanca = this.hancas.filter(
+                (item) => item.id == id
+              )[0].hanca;
+              this.kategoriHanca = this.kategoris.filter(
+                (item) =>
+                  item.namaKategori ==
+                  this.hancas.filter((item) => item.id == id)[0].kategori
+                    .namaKategori
+              )[0].index;
+              this.jumlahHanca = this.hancas.filter(
+                (item) => item.id == id
+              )[0].jumlah;
+              this.idHanca = id;
+              this.bukaFormUbah();
+            } else {
+              this.membersihkanForm();
+              this.idHanca = "";
+            }
+          },
+
+          //simpan perubahan hanca
+          simpanUbahHanca() {
+            if (this.validasiHanca()) {
+              let index = this.hancas.findIndex(
+                (item) => item.id == this.idHanca
+              );
+              this.hancas.splice(index, 1, {
+                id: this.idHanca,
+                hanca: this.namaHanca,
+                kategori: this.kategoris[this.kategoriHanca],
+                jumlah: this.jumlahHanca,
+              });
+              this.membersihkanForm();
+              this.bukaFormUbah();
+            }
+          },
+
+          //fungsi tidak terkait form
+          //hapusSemuaHanca
+          hapusSemuaHanca() {
+            if (!this.hancas.length) {
+              alert("hanca masih kosong. Ayo buat hancamu!!!");
+            } else {
+              if (confirm("hapus hanca?")) {
+                this.hancas = [];
+              }
+            }
+          },
+
+          //hapus hanca berdasarkan id
+          hapusHanca(id) {
+            if (confirm("ingin menghapus hanca tersebut?")) {
+              this.hancas = this.hancas.filter((item) => item.id != id);
+            }
+          },
+
+          modalLebihTigaHanca: false,
+
+          memunculkanLebihTigaHannca() {
+            this.modalLebihTigaHanca = !this.modalLebihTigaHanca;
+          },
         });
-
-        reader.readAsDataURL(document.getElementById("categoryImage").files[0]);
-
-        console.log(name);
       });
-    </script> -->
+    </script>
   </body>
 </html>

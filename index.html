@@ -13,11 +13,11 @@
   </head>
   <body class="bg-[#faf4f0]" x-data>
     <header
-      class="flex justify-between items-center pt-4 mx-6 md:ml-[152px] md:mr-24 md:mt-10 mb-20"
+      class="flex justify-between items-center pt-4 mx-6 md:mx-14 md:mt-10 mb-20"
     >
       <h1 class="text-xl md:text-3xl font-bold text-neutral-700">Hanca</h1>
       <div
-        class="relative md:static flex flex-col-reverse items-end md:items-center gap-x-8"
+        class="relative md:static flex flex-col-reverse md:flex-row items-end md:items-center gap-x-8"
       >
         <form
           x-show="$store.hanca.modalPengguna"
@@ -38,7 +38,7 @@
               type="text"
               x-model="$store.hanca.namaPengguna = $store.hanca.pengguna"
               placeholder="isi nama kamu..."
-              class="text-neutral-700 py-2 px-3 w-48 mr-6 rounded-3xl focus:outline-none focus:border-none"
+              class="text-sm md:text-base w-60 text-neutral-700 py-2 px-3 md:w-80 mr-2 md:mr-6 rounded-3xl focus:outline-none focus:border-none"
             />
           </template>
           <button
@@ -82,12 +82,12 @@
         </template>
       </div>
     </header>
-    <main class="flex flex-col gap-y-12 md:flex-row">
-      <div id="tentang-hanca" class="px-6 lgw-1/2 lgpx-14 lgml-24">
+    <main class="flex flex-col gap-y-12 lg:flex-row">
+      <div id="tentang-hanca" class="px-6 md:px-14 lg:w-1/2 lg:px-14">
         <img
           src="./images/tertunda-resize.jpg"
           alt=""
-          class="block rounded-lg"
+          class="block md:w-full rounded-lg"
         />
         <h2 class="text-lg font-bold md:text-xl text-neutral-700 mt-6">
           Apa itu hanca?
@@ -105,11 +105,11 @@
       </div>
       <div
         id="item-hanca"
-        class="mx-4 px-2 md:w-1/2 py-4 md:px-14 bg-[#ffffff] md:mr-24 rounded-lg relative"
+        class="mx-4 md:mx-14 px-2 lg:w-1/2 py-4 bg-[#ffffff] rounded-lg relative"
       >
         <button
           @click="$store.hanca.bukaFormTambah()"
-          class="text-sm block py-2 px-4 md:px-10 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium md:text-base"
+          class="text-sm block md:ml-6 py-2 px-4 md:px-10 bg-[#3aa1ca] rounded-3xl text-neutral-100 font-medium md:text-base"
         >
           buat hanca
         </button>
@@ -281,7 +281,10 @@
         </div>
         <template x-if="$store.hanca.hancas.length">
           <template x-for="item in $store.hanca.hancas">
-            <div class="mt-14 mb-10 flex gap-x-2 justify-start" :key="item.id">
+            <div
+              class="mt-14 mb-10 flex gap-x-2 justify-start md:px-14"
+              :key="item.id"
+            >
               <div class="w-1/4">
                 <img :src="item.kategori.icon" alt="icon kategori" />
               </div>
@@ -303,7 +306,7 @@
                   </p>
                 </div>
                 <div class="flex justify-between text-neutral-700 mt-8">
-                  <p class="text-xs md:text-sm">1 juni</p>
+                  <p class="text-xs md:text-sm"></p>
                   <div class="flex gap-x-4">
                     <button
                       @click="$store.hanca.ubahHanca(item.id)"
